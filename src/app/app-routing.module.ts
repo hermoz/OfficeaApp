@@ -1,14 +1,35 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
+  {
+    path: 'materials',
+    children: [
+      {
+        path: '',
+        loadChildren: './materials/materials.module#MaterialsPageModule'
+      },
+      {
+        path: 'detail/:materialId',
+        loadChildren: './material-detail/material-detail.module#MaterialDetailPageModule'
+      },
+      {
+        path: 'edit/:materialId',
+        loadChildren: './material-edit/material-edit.module#MaterialEditPageModule'
+      },
+    ]
+  },
+  {
+    path: '',
+    redirectTo: '/materials',
+    pathMatch: 'full'
+  },
 ];
+
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })
